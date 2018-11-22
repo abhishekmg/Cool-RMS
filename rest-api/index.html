@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+<body ng-app="myApp" ng-controller="myCtrl">
+
+
+    <form method="POST">
+        Name: <input type="text" ng-model="Name" required> 
+        
+        Quantity: <input type="number" ng-model="Quantity" required>
+        Discription: <input type="text" ng-model="CustomerDescription">
+        <button ng-click="submit()">Submit</button>
+        <br>
+        to visit admin : <a href="https://rms-be.herokuapp.com/admin">https://rms-be.herokuapp.com/admin</a>
+        if json dats doesnt appear click refresh, if it still doesnt come may god help us.
+        
+        
+    </form>
+
+<script>
+var app = angular.module("myApp", []);
+app.controller("myCtrl", function($scope,$http) {
+  $scope.Name = ""
+  $scope.Quantity = ""
+  $scope.CustomerDescription = ""
+
+
+$scope.submit = function () {
+//console.log(JSON.stringify($scope.Name, $scope.Quantity))
+var data = {
+    Name : $scope.Name,
+    Quantity: $scope.Quantity,
+    CustomerDescription: $scope.CustomerDescription
+}
+$http({
+url: 'https://rms-be.herokuapp.com/',
+method: "POST",
+data: JSON.stringify(data),
+headers : {'Content-Type': 'application/json'}
+})
+.then((response) => {
+    $scope.myData = response.data
+    window.location.reload()
+    console.log('success')
+},
+(err) => { 
+    console.log(err)
+});
+}
+  
+});
+</script>
+
+</body>
+</html>
